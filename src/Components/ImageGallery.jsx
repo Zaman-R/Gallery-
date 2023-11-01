@@ -4,21 +4,31 @@ const ImageGallery = ({ selectedImages, selectedImageIndexes, toggleImageSelecti
   }
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex flex-wrap justify-center items-center">
       {selectedImages &&
         selectedImages.map((image, index) => (
           <div
             key={image.url}
-            className={`image relative shadow-md m-2 ${index === 0 ? 'w-64' : 'w-32'} hover:opacity-80`}
-            onClick={() => handleImageClick(index)}
+            className={`w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-2`}
           >
-            <input
-              type="checkbox"
-              checked={selectedImageIndexes.includes(index)}
-              onChange={() => toggleImageSelection(index)}
-              className="absolute top-2 left-2"
-            />
-            <img src={image.url} height="200" alt="upload" />
+            <div
+              className={`image relative shadow-md ${
+                index === 0 ? 'w-full' : 'w-3/4'
+              } hover:opacity-80`}
+              onClick={() => handleImageClick(index)}
+            >
+              <input
+                type="checkbox"
+                checked={selectedImageIndexes.includes(index)}
+                onChange={() => toggleImageSelection(index)}
+                className="absolute top-2 left-2"
+              />
+              <img src={image.url} height="200" alt="upload" />
+
+              {selectedImageIndexes.includes(index) && (
+                <div className="overlay"></div>
+              )}
+            </div>
           </div>
         ))}
     </div>
