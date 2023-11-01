@@ -5,6 +5,7 @@ import ImageUploader from "./Components/ImageUploader";
 const App = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImageIndexes, setSelectedImageIndexes] = useState([]);
+  const [draggedImageIndex, setDraggedImageIndex] = useState(null);
 
   const onSelectFile = (event) => {
     const selectedFiles = event.target.files;
@@ -17,7 +18,7 @@ const App = () => {
     setSelectedImages((previousImages) => previousImages.concat(imagesArray));
 
     event.target.value = "";
-  };
+  }
 
   function deleteHandler() {
     const updatedImages = selectedImages.filter(
@@ -40,6 +41,21 @@ const App = () => {
     setSelectedImageIndexes(updatedIndexes);
   }
 
+  function handleImageReorder(fromIndex, toIndex) {
+    // Reorder images in the selectedImages array
+    const updatedImages = [...selectedImages];
+    const [movedImage] = updatedImages.splice(fromIndex, 1);
+    updatedImages.splice(toIndex, 0, movedImage);
+
+    // Update selectedImageIndexes to reflect the new order
+    const updatedIndexes = [...selectedImageIndexes];
+    updatedIndexes.splice(fromIndex, 1);
+    updatedIndexes.splice(toIndex, 0, fromIndex);
+
+    setSelectedImages(updatedImages);
+    setSelectedImageIndexes(updatedIndexes);
+  }
+
   return (
     <div className="p-8">
       <div className="flex justify-between">
@@ -58,6 +74,8 @@ const App = () => {
         selectedImages={selectedImages}
         selectedImageIndexes={selectedImageIndexes}
         toggleImageSelection={toggleImageSelection}
+        onImageReorder={handleImageReorder} // Pass the reorder function
+        draggedImageIndex={draggedImageIndex}
       />
       <ImageUploader onSelectFile={onSelectFile} />
     </div>
