@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ImageGallery from "./components/ImageGallery";
+import ImageGallery from "./Components/ImageGallery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,
