@@ -8,8 +8,14 @@ const ImageGallery = ({ selectedImages, selectedImageIndexes, toggleImageSelecti
       return;
     }
 
-    if (e.target.type === "checkbox") {
+    if (e.target.type === "checkbox" || e.target.tagName === "INPUT") {
       toggleImageSelection(index);
+    } else {
+      // Handle the click on the image if not the checkbox
+      const checkbox = e.currentTarget.querySelector("input[type='checkbox']");
+      if (checkbox) {
+        toggleImageSelection(index);
+      }
     }
   }
 
