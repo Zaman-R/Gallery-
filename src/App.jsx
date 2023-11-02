@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ImageGallery from "./Components/ImageGallery";
+import ImageGallery from "./components/ImageGallery";
 import ImageUploader from "./Components/ImageUploader";
 
 const App = () => {
@@ -29,6 +29,10 @@ const App = () => {
   }
 
   function toggleImageSelection(index) {
+    if (draggedImageIndex !== null) {
+      setDraggedImageIndex(null);
+      return;
+    }
     const updatedIndexes = [...selectedImageIndexes];
     if (updatedIndexes.includes(index)) {
       // Image is already selected, so deselect it
@@ -74,8 +78,9 @@ const App = () => {
         selectedImages={selectedImages}
         selectedImageIndexes={selectedImageIndexes}
         toggleImageSelection={toggleImageSelection}
-        onImageReorder={handleImageReorder} // Pass the reorder function
+        onImageReorder={handleImageReorder}
         draggedImageIndex={draggedImageIndex}
+        setDraggedImageIndex={setDraggedImageIndex}
       />
       <ImageUploader onSelectFile={onSelectFile} />
     </div>

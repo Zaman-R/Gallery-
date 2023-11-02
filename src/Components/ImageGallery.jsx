@@ -1,18 +1,30 @@
-import { useState } from "react";
+const ImageGallery = ({ selectedImages, selectedImageIndexes, toggleImageSelection, onImageReorder, draggedImageIndex, setDraggedImageIndex }) => {
+  
+  
+  function handleImageClick(index, e) {
+    // Don't select when dragging
+    if (draggedImageIndex !== null) {
+      setDraggedImageIndex(null);
+      return;
+    }
 
-const ImageGallery = ({ selectedImages, selectedImageIndexes, toggleImageSelection, onImageReorder }) => {
-  const [draggedImageIndex, setDraggedImageIndex] = useState(null);
-
-  function handleImageClick(index) {
-    toggleImageSelection(index);
+    if (e.target.type === "checkbox") {
+      toggleImageSelection(index);
+    }
   }
 
   function handleDragStart(e, index) {
+    
     e.dataTransfer.setData("text/plain", index);
+    // console.log(e.target);
     setDraggedImageIndex(index);
   }
 
-  function handleDragOver(e, index) {
+  function handleDragEnd() {
+    setDraggedImageIndex(null);
+  }
+
+  function handleDragOver(e) {
     e.preventDefault();
   }
 
@@ -26,32 +38,29 @@ const ImageGallery = ({ selectedImages, selectedImageIndexes, toggleImageSelecti
   }
 
   return (
-    <div className="flex flex-wrap justify-center items-center">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {selectedImages &&
         selectedImages.map((image, index) => (
           <div
             key={image.url}
-            className={`w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-2`}
+            className={`${
+              index === 0 ? 'md:col-span-2 lg:col-span-2 xl:col-span-2 xl:row-span-2' : 'col-span-1'
+            } relative shadow-md `}
             onDragOver={(e) => handleDragOver(e, index)}
             onDrop={(e) => handleDrop(e, index)}
           >
             <div
-              className={`image relative shadow-md ${
-                index === 0 ? 'w-full' : 'w-3/4'
-              } hover:opacity-80`}
               draggable
               onDragStart={(e) => handleDragStart(e, index)}
-              onClick={() => handleImageClick(index)}
+              onDragEnd={(e) => handleDragEnd(e, index)}
+              onClick={(e) => handleImageClick(index, e)}
             >
               <input
                 type="checkbox"
                 checked={selectedImageIndexes.includes(index)}
-                onChange={() => toggleImageSelection(index)}
-                className="absolute top-2 left-2"
+                className="absolute top-4 left-4 z-50 bg-white w-5 h-5"
               />
-              <img src={image.url} height="200" alt="upload" />
-              {selectedImageIndexes.includes(index) && <div className="overlay"></div>}
-              {draggedImageIndex === index && <div className="drag-indicator">Drop Here</div>}
+              <img className="hover:brightness-50" src={image.url} height="200" alt="upload" />
             </div>
           </div>
         ))}
