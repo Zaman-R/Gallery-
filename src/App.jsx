@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 import { useState } from 'react';
 import ImageGallery from './Components/ImageGallery';
 import Navbar from './Components/Navbar';
+=======
+import { useState } from "react";
+import ImageGallery from "./Components/ImageGallery";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+>>>>>>> cfc22d4e0a9e13c1daeaeaf4aeab77da69a9d16a
 
 const App = () => {
   // State variables to manage selected images, indexes, and dragged image index
