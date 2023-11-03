@@ -1,13 +1,23 @@
-const ImageGallery = ({ selectedImages, selectedImageIndexes, toggleImageSelection, onImageReorder, draggedImageIndex, setDraggedImageIndex }) => {
-  
-  
+
+// ImageGallery component responsible for displaying a grid of images.
+
+const ImageGallery = ({
+  selectedImages,
+  selectedImageIndexes,
+  toggleImageSelection,
+  onImageReorder,
+  draggedImageIndex,
+  setDraggedImageIndex,
+}) => {
+  // Handle a click on an image or checkbox
   function handleImageClick(index, e) {
-    // Don't select when dragging
+    // If an image is being dragged, cancel the selection action
     if (draggedImageIndex !== null) {
       setDraggedImageIndex(null);
       return;
     }
 
+    // Check if the clicked element is a checkbox or its container
     if (e.target.type === "checkbox" || e.target.tagName === "INPUT") {
       toggleImageSelection(index);
     } else {
@@ -19,21 +29,23 @@ const ImageGallery = ({ selectedImages, selectedImageIndexes, toggleImageSelecti
     }
   }
 
+  // Handle the start of image dragging
   function handleDragStart(e, index) {
-    
     e.dataTransfer.setData("text/plain", index);
-    // console.log(e.target);
     setDraggedImageIndex(index);
   }
 
+  // Handle the end of image dragging
   function handleDragEnd() {
     setDraggedImageIndex(null);
   }
 
+  // Allow dropping images
   function handleDragOver(e) {
     e.preventDefault();
   }
 
+  // Handle dropping an image
   function handleDrop(e, index) {
     e.preventDefault();
     const fromIndex = parseInt(e.dataTransfer.getData("text/plain"));
@@ -50,7 +62,9 @@ const ImageGallery = ({ selectedImages, selectedImageIndexes, toggleImageSelecti
           <div
             key={image.url}
             className={`${
-              index === 0 ? 'md:col-span-2 lg:col-span-2 xl:col-span-2 xl:row-span-2' : 'col-span-1'
+              index === 0
+                ? "md:col-span-2 lg:col-span-2 xl:col-span-2 xl:row-span-2"
+                : "col-span-1"
             } relative shadow-md `}
             onDragOver={(e) => handleDragOver(e, index)}
             onDrop={(e) => handleDrop(e, index)}
